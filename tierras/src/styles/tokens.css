@@ -1,0 +1,27 @@
+:root {
+  /* Paleta: bosque, musgo, tierra, arena y blanco cálido */
+  --bosque-900: #14241b;
+  --bosque-700: #1f3a2c;
+  --musgo-500: #4b6a4e;
+  --helecho-300: #9bb59a;
+  --tierra-600: #86592f;
+  --tierra-300: #c9a77c;
+  --arena-200: #e8e0cf;
+  --lino-100: #f3eee3;
+  --calido-50: #fbf9f4;
+  --tinta: #1b261f;
+  --tinta-suave: #4a564d;
+
+  --fuente-titulo: 'Fraunces Variable', 'Georgia', serif;
+  --fuente-texto: 'Figtree Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --texto-base: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --h1: clamp(2.8rem, 1.6rem + 6vw, 6.5rem);
+  --h2: clamp(2.1rem, 1.4rem + 3vw, 3.9rem);
+  --h3: clamp(1.4rem, 1.2rem + 1vw, 2rem);
+
+  --espacio-seccion: clamp(4.5rem, 3rem + 8vw, 9rem);
+  --ancho: 76rem;
+  --radio: 4px;
+  --nav-alto: 4.25rem;
+}
