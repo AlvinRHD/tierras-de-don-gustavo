@@ -5,7 +5,7 @@
   font-synthesis: none;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
-  scroll-padding-top: 112px;
+  scroll-padding-top: 24px;
 }
 
 * { box-sizing: border-box; }
@@ -38,110 +38,108 @@ p { line-height: 1.7; }
 .saltar { position: absolute; left: 12px; top: -70px; z-index: 100; padding: 12px; background: #fff; }
 .saltar:focus { top: 12px; }
 
-/* Navegación que permanece visible sin tapar el contenido */
-
-/* Navbar flotante */
-.encabezado {
+/* Navbar flotante: accesos directos con iconos */
+.dock {
   position: fixed;
-  z-index: 50;
-  top: 14px;
   left: 50%;
-  width: max-content;
+  bottom: calc(16px + env(safe-area-inset-bottom));
+  z-index: 100;
   max-width: calc(100% - 16px);
   transform: translateX(-50%);
-  transition: top .45s ease, transform .45s ease;
 }
 
-/* El menú baja al desplazarse */
-.encabezado--abajo {
-  top: calc(100dvh - 14px - env(safe-area-inset-bottom));
-  transform: translate(-50%, -100%);
-}
-
-.navegacion {
+.dock__nav {
   display: flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   padding: 7px;
-  border: 1px solid #e0e6da;
+  border: 1px solid #e1e6df;
   border-radius: 50px;
-  background: rgba(249, 248, 243, .96);
-  box-shadow: 0 8px 28px #153b2b22;
+  background: rgba(250, 249, 245, .96);
+  box-shadow: 0 8px 30px #173c2b26;
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-.navegacion a {
+.dock__boton {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 38px;
-  padding: 10px 13px;
-  border-radius: 30px;
-  color: #526258;
-  font-size: 12px;
-  font-weight: 650;
-  white-space: nowrap;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: #65776a;
   transition: background .2s, color .2s;
 }
 
-.navegacion a:hover {
-  background: #edf0e9;
-  color: #204b37;
-}
-
-/* Sección actual */
-.navegacion a.activo {
-  background: #244d3d;
-  color: white;
-}
-
-/* Pequeño icono del parque */
-.navegacion a.navegacion__logo {
-  width: 36px;
-  padding: 0;
-  margin-right: 5px;
+.dock__boton:hover {
+  background: #e8eee7;
   color: #244d3d;
 }
 
-/* Evita que el botón WhatsApp tape el menú */
-.encabezado--abajo ~ .whatsapp-flotante {
-  bottom: 90px;
+.dock__boton.activo {
+  background: #244d3d;
+  color: #fff;
 }
 
-/* Espacio para el menú superior */
-.portada {
-  padding-top: 105px;
+.dock__whatsapp {
+  margin-left: 4px;
+  background: #2e7150;
+  color: #fff;
 }
 
-/* Adaptación para celulares */
-@media (max-width: 760px) {
-  .navegacion {
-    gap: 0;
+.dock__whatsapp:hover {
+  background: #225d40;
+  color: #fff;
+}
+
+/* Etiquetas visibles con mouse o teclado */
+@media (hover: hover) {
+  .dock__boton::after {
+    content: attr(data-label);
+    position: absolute;
+    bottom: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 7px 10px;
+    border-radius: 7px;
+    background: #1d342e;
+    color: #fff;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s;
+  }
+
+  .dock__boton:hover::after,
+  .dock__boton:focus-visible::after {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .dock__nav {
+    gap: 2px;
     padding: 5px;
   }
 
-  .navegacion .navegacion__logo {
-    display: none;
+  .dock__boton {
+    width: 44px;
+    height: 46px;
   }
 
-  .navegacion a {
-    min-height: 42px;
-    padding: 10px 6px;
-    font-size: 11px;
-  }
-
-  .portada {
-    padding-top: 90px;
+  .dock__whatsapp {
+    margin-left: 2px;
   }
 }
 
 @media (max-width: 360px) {
-  .navegacion a {
-    padding-inline: 4px;
-    font-size: 10px;
-  }
+  .dock__nav { gap: 1px; }
+  .dock__boton { width: 40px; height: 44px; }
 }
-
 
 /* Portada */
 .portada { padding: 36px 0 66px; }
@@ -351,7 +349,7 @@ p { line-height: 1.7; }
 .mapa__pie a { display: inline-flex; align-items: center; gap: 4px; color: #2d5d43; font-weight: 700; }
 
 /* Pie */
-.pie { padding-top: 65px; background: #16372e; color: #fff; }
+.pie { padding: 65px 0 calc(96px + env(safe-area-inset-bottom)); background: #16372e; color: #fff; }
 .pie__interior { display: grid; grid-template-columns: 1.5fr .6fr 1fr; gap: 60px; padding-bottom: 64px; }
 .pie__marca { display: block; font-size: 31px; letter-spacing: -.03em; }
 .pie__interior p { max-width: 290px; color: #a9c2b5; margin-top: 17px; font-size: 13px; }
@@ -363,7 +361,6 @@ p { line-height: 1.7; }
 .pie__inferior small { color: #9bb5a8; font-size: 11px; }
 .pie__sociales { display: flex; gap: 14px; align-items: center; }
 .pie__sociales a { display: grid; place-items: center; height: 30px; min-width: 30px; border: 1px solid #739185; border-radius: 50%; padding: 2px; color: #c7d9ca; font-size: 13px; font-weight: 800; }
-.whatsapp-flotante { position: fixed; bottom: 22px; right: 22px; z-index: 15; display: flex; gap: 9px; align-items: center; padding: 12px 16px; border-radius: 40px; background: #2e7150; box-shadow: 0 6px 24px #173c2c33; color: #fff; font-size: 13px; font-weight: 800; }
 
 @media (max-width: 1020px) {
   .container { width: min(100% - 48px, 1200px); }
@@ -380,7 +377,6 @@ p { line-height: 1.7; }
 @media (max-width: 760px) {
   .container { width: min(100% - 36px, 560px); }
   .seccion { padding: 70px 0; }
-  :root { scroll-padding-top: 92px; }
   
   .portada { padding: 25px 0 48px; }
   .portada__interior, .experiencia__interior, .visita__interior, .ubicacion__interior { grid-template-columns: 1fr; }
@@ -418,8 +414,6 @@ p { line-height: 1.7; }
   .pie { padding-top: 50px; }
   .pie__interior { grid-template-columns: 1fr 1fr; gap: 35px; }
   .pie__interior > div:first-child { grid-column: span 2; }
-  .whatsapp-flotante { bottom: 16px; right: 15px; border-radius: 50%; width: 52px; height: 52px; padding: 0; justify-content: center; }
-  .whatsapp-flotante span { display: none; }
 }
 
 @media (max-width: 440px) {

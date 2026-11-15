@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   ArrowDown, ArrowRight, ArrowUpRight, BedDouble, Check, ChevronDown,
-  Clock3, Compass, Leaf, MapPin, MessageCircle,
-  Mountain, Phone, Users,
+  Clock3, Compass, Leaf, MapPin, MessageCircle, Phone, Users,  House, Images, Share2, Info,
 } from 'lucide-react';
 import { Foto } from './Foto';
 import { Galeria } from './Galeria';
@@ -12,30 +11,30 @@ import {
 } from './datos';
 
 
+
 const enlaces = [
-  { texto: 'Inicio', href: '#inicio' },
-  { texto: 'Cabañas', href: '#cabanas' },
-  { texto: 'Fotos', href: '#fotos' },
-  { texto: 'Redes', href: '#redes' },
-  { texto: 'Visita', href: '#visita' },
-  { texto: 'Mapa', href: '#ubicacion' },
+  { texto: 'Inicio', href: '#inicio', Icono: House },
+  { texto: 'Cabañas', href: '#cabanas', Icono: BedDouble },
+  { texto: 'Galería', href: '#fotos', Icono: Images },
+  { texto: 'Redes', href: '#redes', Icono: Share2 },
+  { texto: 'Tu visita', href: '#visita', Icono: Info },
+  { texto: 'Ubicación', href: '#ubicacion', Icono: MapPin },
 ];
+
 
 
 
 const iconosRed = { facebook: 'f', instagram: '◎', tiktok: '♪' };
 
 
+
 function Encabezado() {
-  const [abajo, setAbajo] = useState(false);
   const [actual, setActual] = useState('#inicio');
 
   useEffect(() => {
     const secciones = document.querySelectorAll('main section[id]');
 
     function actualizar() {
-      setAbajo(window.scrollY > 120);
-
       let visible = '#inicio';
 
       secciones.forEach(seccion => {
@@ -48,37 +47,42 @@ function Encabezado() {
     }
 
     actualizar();
-
     window.addEventListener('scroll', actualizar, { passive: true });
 
     return () => window.removeEventListener('scroll', actualizar);
   }, []);
 
   return (
-    <header className={`encabezado ${abajo ? 'encabezado--abajo' : ''}`}>
-      <nav className="navegacion" aria-label="Navegación principal">
-        <a
-          href="#inicio"
-          className="navegacion__logo"
-          aria-label="Las Tierras de Don Gustavo - Inicio"
-        >
-          <Mountain size={19} strokeWidth={1.8} />
-        </a>
-
-        {enlaces.map(enlace => (
+    <header className="dock">
+      <nav className="dock__nav" aria-label="Navegación principal">
+        {enlaces.map(({ texto, href, Icono }) => (
           <a
-            key={enlace.href}
-            href={enlace.href}
-            className={actual === enlace.href ? 'activo' : ''}
-            aria-current={actual === enlace.href ? 'location' : undefined}
+            key={href}
+            href={href}
+            className={`dock__boton ${actual === href ? 'activo' : ''}`}
+            aria-label={texto}
+            aria-current={actual === href ? 'location' : undefined}
+            data-label={texto}
           >
-            {enlace.texto}
+            <Icono size={23} strokeWidth={1.8} aria-hidden="true" />
           </a>
         ))}
+
+        <a
+          href={consultaVisita}
+          className="dock__boton dock__whatsapp"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Contactar por WhatsApp"
+          data-label="WhatsApp"
+        >
+          <MessageCircle size={23} strokeWidth={1.9} aria-hidden="true" />
+        </a>
       </nav>
     </header>
   );
 }
+
 
 
 function Portada() {
@@ -329,9 +333,6 @@ export default function App() {
         <Ubicacion />
       </main>
       <Pie />
-      <a className="whatsapp-flotante" href={consultaVisita} target="_blank" rel="noopener noreferrer" aria-label="Consultar por WhatsApp">
-        <MessageCircle size={22} /> <span>Consultar</span>
-      </a>
     </>
   );
 }
