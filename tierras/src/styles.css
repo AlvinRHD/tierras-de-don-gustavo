@@ -39,68 +39,109 @@ p { line-height: 1.7; }
 .saltar:focus { top: 12px; }
 
 /* Navegación que permanece visible sin tapar el contenido */
+
+/* Navbar flotante */
 .encabezado {
-  position: sticky;
-  top: 12px;
-  z-index: 40;
-  width: min(1240px, calc(100% - 28px));
-  margin: 12px auto 0;
-  background: rgb(249 248 243 / 96%);
-  border: 1px solid #e0e6da;
-  border-radius: 17px;
-  box-shadow: 0 8px 28px #153b2b17;
-  backdrop-filter: blur(14px);
-  transition: width .25s, box-shadow .25s;
+  position: fixed;
+  z-index: 50;
+  top: 14px;
+  left: 50%;
+  width: max-content;
+  max-width: calc(100% - 16px);
+  transform: translateX(-50%);
+  transition: top .45s ease, transform .45s ease;
 }
-.encabezado--compacto {
-  width: min(1090px, calc(100% - 28px));
-  box-shadow: 0 10px 35px #153b2b23;
+
+/* El menú baja al desplazarse */
+.encabezado--abajo {
+  top: calc(100dvh - 14px - env(safe-area-inset-bottom));
+  transform: translate(-50%, -100%);
 }
-.encabezado__interior {
+
+.navegacion {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-  width: calc(100% - 42px);
-  min-height: 76px;
-  margin: auto;
-  transition: min-height .25s;
+  gap: 3px;
+  padding: 7px;
+  border: 1px solid #e0e6da;
+  border-radius: 50px;
+  background: rgba(249, 248, 243, .96);
+  box-shadow: 0 8px 28px #153b2b22;
+  backdrop-filter: blur(12px);
 }
-.encabezado--compacto .encabezado__interior { min-height: 61px; }
-.marca {
-  display: inline-flex;
+
+.navegacion a {
+  display: flex;
   align-items: center;
-  gap: 11px;
-  flex: none;
-  font-size: 13px;
-  line-height: 1.05;
-  font-weight: 850;
-  letter-spacing: .07em;
-}
-.marca small { display: block; margin-top: 5px; font-size: 9px; letter-spacing: .17em; }
-.marca__icono {
-  display: grid;
-  place-items: center;
-  width: 39px;
-  height: 39px;
-  border: 1px solid #a6bba6;
-  border-radius: 50%;
-  transition: width .25s, height .25s;
-}
-.encabezado--compacto .marca__icono { width: 34px; height: 34px; }
-.navegacion { display: flex; align-items: center; gap: 2px; }
-.navegacion > a:not(.boton) {
-  padding: 9px 11px;
-  border-radius: 9px;
-  color: #4e6255;
+  justify-content: center;
+  min-height: 38px;
+  padding: 10px 13px;
+  border-radius: 30px;
+  color: #526258;
   font-size: 12px;
   font-weight: 650;
   white-space: nowrap;
+  transition: background .2s, color .2s;
 }
-.navegacion > a:not(.boton):hover,
-.navegacion > a.activo:not(.boton) { color: #204b37; background: #e8eee4; }
-.navegacion__contacto { margin-left: 10px; padding: 11px 14px; border-radius: 9px; font-size: 12px; }
-.menu-movil { display: none; padding: 8px; background: transparent; border: 0; color: #1d342e; }
+
+.navegacion a:hover {
+  background: #edf0e9;
+  color: #204b37;
+}
+
+/* Sección actual */
+.navegacion a.activo {
+  background: #244d3d;
+  color: white;
+}
+
+/* Pequeño icono del parque */
+.navegacion a.navegacion__logo {
+  width: 36px;
+  padding: 0;
+  margin-right: 5px;
+  color: #244d3d;
+}
+
+/* Evita que el botón WhatsApp tape el menú */
+.encabezado--abajo ~ .whatsapp-flotante {
+  bottom: 90px;
+}
+
+/* Espacio para el menú superior */
+.portada {
+  padding-top: 105px;
+}
+
+/* Adaptación para celulares */
+@media (max-width: 760px) {
+  .navegacion {
+    gap: 0;
+    padding: 5px;
+  }
+
+  .navegacion .navegacion__logo {
+    display: none;
+  }
+
+  .navegacion a {
+    min-height: 42px;
+    padding: 10px 6px;
+    font-size: 11px;
+  }
+
+  .portada {
+    padding-top: 90px;
+  }
+}
+
+@media (max-width: 360px) {
+  .navegacion a {
+    padding-inline: 4px;
+    font-size: 10px;
+  }
+}
+
 
 /* Portada */
 .portada { padding: 36px 0 66px; }
@@ -329,7 +370,6 @@ p { line-height: 1.7; }
   .portada__interior { gap: 30px; }
   .portada h1 { font-size: clamp(46px, 5.5vw, 65px); }
   .portada__imagen { height: 530px; }
-  .navegacion > a:not(.boton) { padding-inline: 8px; }
   .experiencia__interior { gap: 28px; }
   .datos-rapidos__interior { grid-template-columns: repeat(3, 1fr); }
   .datos-rapidos__interior > a { display: none; }
@@ -341,27 +381,7 @@ p { line-height: 1.7; }
   .container { width: min(100% - 36px, 560px); }
   .seccion { padding: 70px 0; }
   :root { scroll-padding-top: 92px; }
-  .encabezado, .encabezado--compacto { top: 8px; width: calc(100% - 18px); margin-top: 8px; }
-  .encabezado__interior, .encabezado--compacto .encabezado__interior { min-height: 65px; width: calc(100% - 28px); }
-  .marca { font-size: 12px; }
-  .menu-movil { display: flex; }
-  .navegacion {
-    display: none;
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    right: 0;
-    max-height: 75vh;
-    overflow-y: auto;
-    padding: 12px;
-    background: #f9f8f3;
-    border: 1px solid #e0e6da;
-    border-radius: 13px;
-    box-shadow: 0 13px 25px #183e2f24;
-  }
-  .navegacion--abierta { display: flex; flex-direction: column; align-items: stretch; }
-  .navegacion > a:not(.boton) { padding: 12px 13px; font-size: 14px; }
-  .navegacion__contacto { margin: 8px 0 0; }
+  
   .portada { padding: 25px 0 48px; }
   .portada__interior, .experiencia__interior, .visita__interior, .ubicacion__interior { grid-template-columns: 1fr; }
   .portada__texto { padding: 25px 0 0; }

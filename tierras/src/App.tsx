@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import {
   ArrowDown, ArrowRight, ArrowUpRight, BedDouble, Check, ChevronDown,
-  Clock3, Compass, Leaf, MapPin, Menu, MessageCircle,
-  Mountain, Phone, Users, X,
+  Clock3, Compass, Leaf, MapPin, MessageCircle,
+  Mountain, Phone, Users,
 } from 'lucide-react';
 import { Foto } from './Foto';
 import { Galeria } from './Galeria';
@@ -11,27 +11,31 @@ import {
   preguntas, publicaciones, sitio, whatsapp,
 } from './datos';
 
+
 const enlaces = [
   { texto: 'Inicio', href: '#inicio' },
   { texto: 'Cabañas', href: '#cabanas' },
-  { texto: 'Galería', href: '#fotos' },
+  { texto: 'Fotos', href: '#fotos' },
   { texto: 'Redes', href: '#redes' },
-  { texto: 'Tu visita', href: '#visita' },
-  { texto: 'Ubicación', href: '#ubicacion' },
+  { texto: 'Visita', href: '#visita' },
+  { texto: 'Mapa', href: '#ubicacion' },
 ];
+
+
 
 const iconosRed = { facebook: 'f', instagram: '◎', tiktok: '♪' };
 
+
 function Encabezado() {
-  const [abierto, setAbierto] = useState(false);
-  const [compacto, setCompacto] = useState(false);
+  const [abajo, setAbajo] = useState(false);
   const [actual, setActual] = useState('#inicio');
 
   useEffect(() => {
     const secciones = document.querySelectorAll('main section[id]');
 
     function actualizar() {
-      setCompacto(window.scrollY > 60);
+      setAbajo(window.scrollY > 120);
+
       let visible = '#inicio';
 
       secciones.forEach(seccion => {
@@ -44,48 +48,38 @@ function Encabezado() {
     }
 
     actualizar();
+
     window.addEventListener('scroll', actualizar, { passive: true });
+
     return () => window.removeEventListener('scroll', actualizar);
   }, []);
 
   return (
-    <header className={`encabezado ${compacto ? 'encabezado--compacto' : ''}`}>
-      <div className="encabezado__interior">
-        <a className="marca" href="#inicio" onClick={() => setAbierto(false)} aria-label="Ir al inicio">
-          <span className="marca__icono"><Mountain size={22} strokeWidth={1.7} /></span>
-          <span>LAS TIERRAS <small>DE DON GUSTAVO</small></span>
+    <header className={`encabezado ${abajo ? 'encabezado--abajo' : ''}`}>
+      <nav className="navegacion" aria-label="Navegación principal">
+        <a
+          href="#inicio"
+          className="navegacion__logo"
+          aria-label="Las Tierras de Don Gustavo - Inicio"
+        >
+          <Mountain size={19} strokeWidth={1.8} />
         </a>
 
-        <button
-          className="menu-movil"
-          aria-label={abierto ? 'Cerrar menú' : 'Abrir menú'}
-          aria-expanded={abierto}
-          aria-controls="menu-principal"
-          onClick={() => setAbierto(!abierto)}
-        >
-          {abierto ? <X /> : <Menu />}
-        </button>
-
-        <nav id="menu-principal" className={`navegacion ${abierto ? 'navegacion--abierta' : ''}`} aria-label="Navegación principal">
-          {enlaces.map(enlace => (
-            <a
-              key={enlace.href}
-              href={enlace.href}
-              className={actual === enlace.href ? 'activo' : undefined}
-              aria-current={actual === enlace.href ? 'location' : undefined}
-              onClick={() => setAbierto(false)}
-            >
-              {enlace.texto}
-            </a>
-          ))}
-          <a className="boton boton--verde navegacion__contacto" href={consultaVisita} target="_blank" rel="noopener noreferrer">
-            <MessageCircle size={16} /> Contactar
+        {enlaces.map(enlace => (
+          <a
+            key={enlace.href}
+            href={enlace.href}
+            className={actual === enlace.href ? 'activo' : ''}
+            aria-current={actual === enlace.href ? 'location' : undefined}
+          >
+            {enlace.texto}
           </a>
-        </nav>
-      </div>
+        ))}
+      </nav>
     </header>
   );
 }
+
 
 function Portada() {
   return (
